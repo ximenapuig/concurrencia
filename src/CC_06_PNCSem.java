@@ -5,7 +5,7 @@ import es.upm.babel.cclib.Consumidor;
 
 /**
  * Programa concurrente para productor-buffer-consumidor con almacen
- * de capacidad N implementado con sem谩foros (AlmacenN).
+ * de capacidad N implementado con sem醘oros (AlmacenN).
  */
 class CC_06_PNCSem {
    public static final void main(final String[] args)
@@ -14,26 +14,26 @@ class CC_06_PNCSem {
       // Capacidad del buffer
       final int CAPACIDAD = 10;
 
-      // N煤mero de productores y consumidores
+      // N鷐ero de productores y consumidores
       final int N_PRODS = 2;
       final int N_CONSS = 2;
 
       // Almacen compartido
       Almacen almac = new AlmacenN(CAPACIDAD);
 
-      // Declaraci贸n de los arrays de productores y consumidores
+      // Declaraci髇 de los arrays de productores y consumidores
       Productor[] productores;
       Consumidor[] consumidores;
 
-      // Creaci贸n de los arrays
+      // Creaci髇 de los arrays
       productores = new Productor[N_PRODS];
       consumidores = new Consumidor[N_CONSS];
-      // Creaci贸n de los productores
+      // Creaci髇 de los productores
       for (int i = 0; i < N_PRODS; i++) {
          productores[i] = new Productor(almac);
       }
 
-      // Creaci贸n de los consumidores
+      // Creaci髇 de los consumidores
       for (int i = 0; i < N_CONSS; i++) {
          consumidores[i] = new Consumidor(almac);
       }
@@ -48,7 +48,7 @@ class CC_06_PNCSem {
          consumidores[i].start();
       }
 
-      // Espera hasta la terminaci贸n de los procesos
+      // Espera hasta la terminaci髇 de los procesos
       try {
          for (int i = 0; i < N_PRODS; i++) {
             productores[i].join();

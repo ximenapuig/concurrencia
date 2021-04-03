@@ -1,46 +1,47 @@
 import es.upm.babel.cclib.Producto;
 import es.upm.babel.cclib.Almacen;
-
-// TODO: importar la clase de los semáforos.
+import es.upm.babel.cclib.Semaphore;
+// TODO: importar la clase de los semaforos.
 
 /**
- * Implementación de la clase Almacen que permite el almacenamiento
- * de producto y el uso simultáneo del almacen por varios threads.
+ * Implementacion de la clase Almacen que permite el almacenamiento
+ * de producto y el uso simultaneo del almacen por varios threads.
  */
 class Almacen1 implements Almacen {
-   // Producto a almacenar: null representa que no hay producto
-   private Producto almacenado = null;
+	// Producto a almacenar: null representa que no hay producto
+	private Producto almacenado;
+	private Semaphore mutex;
+	private Semaphore prodacc;	  
+	private Semaphore almacc;	  
 
-   // TODO: declaración e inicialización de los semáforos
-   // necesarios
+	public Almacen1() {
+		this.almacenado=null;
+		prodacc = new Semaphore(1);
+		mutex = new Semaphore(1);
+		almacc = new Semaphore(1);
+	}
 
-   public Almacen1() {
-   }
+	public void almacenar(Producto producto) {
+		almacc.await();
+		mutex.await();
+		///Critical///
+		almacenado = producto;
+		//////////////
+		mutex.signal();
+		prodacc.signal();
+	}
 
-   public void almacenar(Producto producto) {
-      // TODO: protocolo de acceso a la sección crítica y código de
-      // sincronización para poder almacenar.
+	public Producto extraer() {
+		prodacc.await();
+		mutex.await();
+		Producto result=null;
+		///Critical///
+		result = almacenado;
+		almacenado=null;
+		//////////////
+		mutex.signal();
+		almacc.signal();
+		return result;
+	}
 
-      // Sección crítica
-      almacenado = producto;
-
-      // TODO: protocolo de salida de la sección crítica y código de
-      // sincronización para poder extraer.
-   }
-
-   public Producto extraer() {
-      Producto result;
-
-      // TODO: protocolo de acceso a la sección crítica y código de
-      // sincronización para poder extraer.
-
-      // Sección crítica
-      result = almacenado;
-      almacenado = null;
-
-      // TODO: protocolo de salida de la sección crítica y código de
-      // sincronización para poder almacenar.
-
-      return result;
-   }
 }

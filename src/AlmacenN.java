@@ -1,62 +1,63 @@
 import es.upm.babel.cclib.Producto;
 import es.upm.babel.cclib.Almacen;
-
-// TODO: importar la clase de los sem谩foros.
+import es.upm.babel.cclib.Semaphore;
 
 /**
- * Implementaci贸n de la clase Almacen que permite el almacenamiento
- * FIFO de hasta un determinado n煤mero de productos y el uso
- * simult谩neo del almac茅n por varios threads.
+ * Implementaci髇 de la clase Almacen que permite el almacenamiento
+ * FIFO de hasta un determinado n鷐ero de productos y el uso
+ * simult醤eo del almac閚 por varios threads.
  */
 class AlmacenN implements Almacen {
-   private int capacidad = 0;
-   private Producto[] almacenado = null;
-   private int nDatos = 0;
-   private int aExtraer = 0;
-   private int aInsertar = 0;
+	private int capacidad;
+	private Producto[] almacenado = null;
+	private int nDatos;
+	private int aExtraer;
+	private int aInsertar;
+	private Semaphore mutEx;
+	private Semaphore almacc;
+	private Semaphore extcc;
+	
+	
+	public AlmacenN(int n) {
+		capacidad = n;
+		almacenado = new Producto[capacidad];
+		nDatos = 0;
+		aExtraer = 0;
+		aInsertar = 0;
+		
+		mutEx = new Semaphore(1);
+		almacc = new Semaphore(capacidad);
+		extcc = new Semaphore(0);
+		
+	}
 
-   // TODO: declaraci贸n de los sem谩foros necesarios
+	public void almacenar(Producto producto) {
+		almacc.await();
+		mutEx.await();
+		// Secci髇 cr韙ica
+		almacenado[aInsertar] = producto;
+		nDatos++;
+		aInsertar++;
+		aInsertar %= capacidad;
+		
+		mutEx.signal();
+		extcc.signal();
+	}
 
-   public AlmacenN(int n) {
-      capacidad = n;
-      almacenado = new Producto[capacidad];
-      nDatos = 0;
-      aExtraer = 0;
-      aInsertar = 0;
+	public Producto extraer() {
+		extcc.await();
+		mutEx.await();
+		Producto result;
 
-      // TODO: inicializaci贸n de los sem谩foros
-   }
+		// Secci髇 cr韙ica
+		result = almacenado[aExtraer];
+		almacenado[aExtraer] = null;
+		nDatos--;
+		aExtraer++;
+		aExtraer %= capacidad;
 
-   public void almacenar(Producto producto) {
-      // TODO: protocolo de acceso a la secci贸n cr铆tica y c贸digo de
-      // sincronizaci贸n para poder almacenar.
-
-      // Secci贸n cr铆tica
-      almacenado[aInsertar] = producto;
-      nDatos++;
-      aInsertar++;
-      aInsertar %= capacidad;
-
-      // TODO: protocolo de salida de la secci贸n cr铆tica y c贸digo de
-      // sincronizaci贸n para poder extraer.
-   }
-
-   public Producto extraer() {
-      Producto result;
-
-      // TODO: protocolo de acceso a la secci贸n cr铆tica y c贸digo de
-      // sincronizaci贸n para poder extraer.
-
-      // Secci贸n cr铆tica
-      result = almacenado[aExtraer];
-      almacenado[aExtraer] = null;
-      nDatos--;
-      aExtraer++;
-      aExtraer %= capacidad;
-
-      // TODO: protocolo de salida de la secci贸n cr铆tica y c贸digo de
-      // sincronizaci贸n para poder almacenar.
-
-      return result;
-   }
+		mutEx.signal();
+		almacc.signal();
+		return result;
+	}
 }

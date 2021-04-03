@@ -7,36 +7,36 @@ import es.upm.babel.cclib.Fabrica;
 
 /**
  * Programa concurrente para productor-buffer-consumidor con almacen
- * de tamaño 1 implementado con semáforos (Almacen1).
+ * de tamaño 1 implementado con semaforos (Almacen1).
  */
 class CC_05_P1CSem {
     public static final void main(final String[] args)
        throws InterruptedException
     {
-        // Número de productores y consumidores
+        // Numero de productores y consumidores
         final int N_PRODS = 2;
         final int N_CONSS = 2;
 
-        Consumo.establecerTiempoMedioCons(100);
-        Fabrica.establecerTiempoMedioProd(100);
+        Consumo.establecerTiempoMedioCons(500);
+        Fabrica.establecerTiempoMedioProd(1000);
 
         // Almacen compartido
         Almacen almac = new Almacen1();
 
-        // Declaración de los arrays de productores y consumidores
+        // Declaracion de los arrays de productores y consumidores
         Productor[] productores;
         Consumidor[] consumidores;
 
-        // Creación de los arrays
+        // Creacion de los arrays
         productores = new Productor[N_PRODS];
         consumidores = new Consumidor[N_CONSS];
 
-        // Creación de los productores
+        // Creacion de los productores
         for (int i = 0; i < N_PRODS; i++) {
             productores[i] = new Productor(almac);
         }
 
-        // Creación de los consumidores
+        // Creacion de los consumidores
         for (int i = 0; i < N_CONSS; i++) {
             consumidores[i] = new Consumidor(almac);
         }
@@ -51,7 +51,7 @@ class CC_05_P1CSem {
             consumidores[i].start();
         }
 
-        // Espera hasta la terminación de los procesos
+        // Espera hasta la terminacion de los procesos
         try {
             for (int i = 0; i < N_PRODS; i++) {
                 productores[i].join();
