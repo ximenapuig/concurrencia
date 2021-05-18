@@ -1,4 +1,7 @@
 package cc.banco;
+import es.upm.aedlib.fifo.FIFO;
+import es.upm.aedlib.fifo.FIFOArray;
+import es.upm.babel.cclib.Monitor;
 
 public interface Banco {
   /**
