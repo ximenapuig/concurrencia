@@ -30,7 +30,7 @@ public class Simulador {
   }
 
   /**
-   * Devuele un array con todos los nÃºmeros de cuenta posibles.
+   * Devuele un array con todos los números de cuenta posibles.
    */
   public static String[] cuentas()
   {
@@ -43,9 +43,9 @@ public class Simulador {
 
 
 /**
- * Las instancias de Generador son capaces de generar nÃºmeros de
- * cuenta y valores para ingresar o transferir asÃ­ como enteros entre
- * 0 y un entero mÃ¡ximo (Nota: la implementaciÃ³n no es reentrante, lo
+ * Las instancias de Generador son capaces de generar números de
+ * cuenta y valores para ingresar o transferir así como enteros entre
+ * 0 y un entero máximo (Nota: la implementación no es reentrante, lo
  * mejor es que los procesos no compartan el mismo generador).
  */
 class Generador {
@@ -62,7 +62,7 @@ class Generador {
   }
 
   /**
-   * Devuele un nÃºmero de cuenta aleatorio.
+   * Devuele un número de cuenta aleatorio.
    */
   public String cuenta()
   {
@@ -104,7 +104,7 @@ class Cajero extends Thread {
       int v = g.valor();
 
       b.ingresar(c, v);
-      // Imprimir informaciÃ³n sobre
+      // Imprimir información sobre
       // el ingreso realizado
       ConcIO.printfnl(
         "Ingreso en %s: %d",
@@ -132,12 +132,12 @@ class Ordenante extends Thread {
       v = g.valor();
 
       try { b.transferir(o, d, v);
-        // Imprimir informaciÃ³n sobre
+        // Imprimir información sobre
         // la transferencia realizada
         ConcIO.printfnl("Transferencia de %s a %s: %d",
                         o, d, v);
       } catch (IllegalArgumentException exc) {
-        ConcIO.printfnl("Transferencia de %s a %s: %d lanzÃ³ la excepciÃ³n IllegalArgumentException",
+        ConcIO.printfnl("Transferencia de %s a %s: %d lanzó la excepción IllegalArgumentException",
                         o, d, v);
       }
       try { sleep(g.positivo(6000)); } catch (InterruptedException exc) { }
@@ -162,12 +162,12 @@ class Consultor extends Thread {
 
       try {
         s = b.disponible(c);
-        // Imprime informaciÃ³n sobre
+        // Imprime información sobre
         // el saldo disponible
         ConcIO.printfnl("Saldo en %s: %d",
                         c, s);
       } catch (IllegalArgumentException exc) {
-        ConcIO.printfnl("Saldo en %s lanzÃ³ la excepciÃ³n IllegalArgumentException",
+        ConcIO.printfnl("Saldo en %s lanzó la excepción IllegalArgumentException",
                         c);
       }
 
@@ -201,7 +201,7 @@ class Avisador extends Thread {
         ConcIO.printfnl("ALERTA: %s por debajo de %d",
                         c, m);
       } catch (IllegalArgumentException exc) {
-        ConcIO.printfnl("ALERTA: %s por debajo de %d lanzÃ³ la excepciÃ³n IllegalArgumentException",
+        ConcIO.printfnl("ALERTA: %s por debajo de %d lanzó la excepción IllegalArgumentException",
                         c, m);
       }
 
